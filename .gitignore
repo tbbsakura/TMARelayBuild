@@ -11,6 +11,18 @@
 /[Uu]ser[Ss]ettings/
 /Assets/uOSC/
 /Assets/uOSC.meta
+/Assets/EVMC4U/
+/Assets/EVMC4U.meta
+/Assets/UniGLTF/
+/Assets/UniGLTF.meta
+/Assets/VRM/
+/Assets/VRM.meta
+/Assets/VRMShaders/
+/Assets/VRMShaders.meta
+/Assets/ExternalReceiver.unity
+/Assets/ExternalReceiver.unity.meta
+/Assets/StandaloneFileBrowser/
+/Assets/StandaloneFileBrowser.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
