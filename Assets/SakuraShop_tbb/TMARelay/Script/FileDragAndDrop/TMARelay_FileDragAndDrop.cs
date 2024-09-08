@@ -20,27 +20,34 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
     private bool m_loading = false;
     private Text m_topText;
 
-    UniHumanoid.HumanPoseTransfer m_target = null; // ロードされたVRMモデルのHumanPoseTransfer
+    private string m_lastLoadedFile;
+    public string LastLoadedFile => m_lastLoadedFile;
+
+    EVMC4U.ExternalReceiver m_exrec;
+    RuntimeGltfInstance _lastLoaded = null;
+    SakuraVRMMuscle2OSC _muscle2OSC;
+
+    private void Awake() {
+        m_exrec = GameObject.Find("/ExternalReceiver").GetComponent<EVMC4U.ExternalReceiver>();
+        _muscle2OSC = GetComponent<SakuraVRMMuscle2OSC>();
+    }
 
     void OnEnable ()
     {
         // must be installed on the main thread to get the right thread id.
         UnityDragAndDropHook.InstallHook();
         UnityDragAndDropHook.OnDroppedFiles += OnFiles;
-
-        /* buildせずにテストするときはドラッグ＆ドロップが効かないのでコードで読む
-        var muscle2OSC = GameObject.Find("Muscle2OSC").GetComponent<SakuraVRMMuscle2OSC>();
-        if ( muscle2OSC._animationTarget == null )
-        {
-            //LoadModel("Z:\\vr\\_VRM\\fumifumi\\3c.nobag.vrm");
-            //muscle2OSC.ReadCustomExParamList("C:\\UnityProj\\Emistia_VCCmain\\Assets\\SakuraShop_tbb\\TMARelay\\HumanoidAnim\\ExpertMode\\ExpertMode-ExParams_上半身.txt");
-        }
-        */
         m_topText = GameObject.Find("TopText").GetComponent<Text>();
     }
     void OnDisable()
     {
         UnityDragAndDropHook.UninstallHook();
+    }
+
+    public void OpenVRM(string path)
+    {
+        if ( m_loading ) return; // ignore
+        LoadModel(path);
     }
 
     void OnFiles(List<string> aFiles, POINT aPos)
@@ -49,14 +56,15 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
         LoadModel(aFiles[0].ToString()); // load only 1st file
     }
     
-    void OnLoaded(RuntimeGltfInstance loaded)
+    void OnLoaded(RuntimeGltfInstance loaded, string path)
     {
-        var root = loaded.gameObject;
-
-        root.transform.SetParent(transform, false);// このcomponentがattachされているオブジェクトを親に設定する
-        root.transform.position.Set(-1,1,3); // 位置調整
+        if ( loaded == null || loaded.Root == null )  return;
+        if ( _lastLoaded != null ) Destroy(_lastLoaded.Root);
+        _lastLoaded = loaded;
+        loaded.Root.transform.SetParent(transform, false);// このcomponentがattachされているオブジェクトを親に設定する
+        loaded.Root.transform.position.Set(-1,1,3); // 位置調整
         m_topText.text = "Showing Meshes...";
-        foreach (var spring in root.GetComponentsInChildren<VRMSpringBone>())
+        foreach (var spring in loaded.Root.GetComponentsInChildren<VRMSpringBone>())
         {
             spring.Setup();
             spring.gameObject.SetActive(false);
@@ -69,16 +77,15 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
             lah.UpdateType = UpdateType.LateUpdate;
         }
 
-        m_target = root.AddComponent<UniHumanoid.HumanPoseTransfer>();
-        if ( m_target != null ) 
+        UniHumanoid.HumanPoseTransfer target = loaded.Root.AddComponent<UniHumanoid.HumanPoseTransfer>();
+        if ( target != null ) 
         {
-            var animator = m_target.GetComponent<Animator>();
+            Animator animator = target.GetComponent<Animator>();
             if (animator != null)
             {
-                var exrec = GameObject.Find("ExternalReceiver").GetComponent<EVMC4U.ExternalReceiver>();
-                exrec.Model = m_target.gameObject;
-                var muscle2OSC = GameObject.Find("Muscle2OSC").GetComponent<SakuraVRMMuscle2OSC>();
-                muscle2OSC._animationTarget = animator;
+                if ( m_exrec != null && target != null ) m_exrec.Model = loaded.Root;
+                m_lastLoadedFile = path; // load と show が成功してから更新する
+                _muscle2OSC?.OnVRMLoaded(animator);
             }
         }
         m_topText.text = "VRM loaded";
@@ -91,11 +98,6 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
         if ( ext == ".vrm" ) 
         {
             if ( m_topText != null ) m_topText.text = "Loading VRM...";
-            if (m_target != null) // unload
-            {
-                GameObject.Destroy(m_target.gameObject);
-                m_target = null;
-            }
             using ( var data = new GlbFileParser(path).Parse() ) 
             {
                 muscle2OSC.SetClientTogglesOff();
@@ -146,7 +148,7 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
                             return;
                         }
                     }
-                    OnLoaded(loaded);
+                    OnLoaded(loaded, path);
                 }
             }
         }
