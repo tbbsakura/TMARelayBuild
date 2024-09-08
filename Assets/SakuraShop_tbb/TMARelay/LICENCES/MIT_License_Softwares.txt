@@ -1,0 +1,23 @@
+Dates (this software) is under MIT License,
+and it uses other MIT-Licensed softwares described below:
+
+1. UnityWindowsFileDrag&Drop (MIT License)
+Copyright (c) 2018 Markus Göbel (Bunny83) 
+https://github.com/Bunny83/UnityWindowsFileDrag-Drop
+
+2. uOSC (MIT Licence)
+https://github.com/hecomi/uOSC
+
+
+3. EVMCP4U (Eazy Virtual Motion Capture for Unity), External Receiver Pack (MIT License)
+Copyright (c) 2019-2020 gpsnmeajp
+https://booth.pm/ja/items/1801535
+
+EVMCP4U package includes other MIT-Licesed softwares as below:
+
+3-1. UniVRM - UniVRM, UniGLTF, UniHumanoid, MToon(MIT Licence)
+Copyright (c) 2020 VRM Consortium
+Copyright (c) 2018 Masataka SUMI for MToon
+https://github.com/vrm-c/UniVRM
+
+3-2. uOSC (same as 2)
