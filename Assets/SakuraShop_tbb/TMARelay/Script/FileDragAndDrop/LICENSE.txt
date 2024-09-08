@@ -2,7 +2,7 @@ MIT License
 
 UnityWindowsFileDrag-Drop 
 Origlnal "FileDragAndDrop.cs" Copyright (c) 2018 Markus Göbel (Bunny83)
-Modified "TMARelay_FileDragAndDrop.cs"  Copyright (c) 2023 Sakura(さくら) tbbsakuara
+Modified "TMARelay_FileDragAndDrop.cs"  Copyright (c) 2023-2024 Sakura(さくら) tbbsakuara
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
