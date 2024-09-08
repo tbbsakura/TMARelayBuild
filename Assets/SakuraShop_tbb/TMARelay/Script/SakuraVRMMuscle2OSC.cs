@@ -2,17 +2,21 @@
 // Copyright (c) 2023 Sakura(さくら) / tbbsakura
 // MIT License. See "LICENSE" file.
 
-using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using uOSC;
 using System.IO;
-using UnityEngine.UIElements;
 using System;
+using SFB;
+
+using SakuraScript.Utils;
 
 namespace UnityEngine.UI
 {
+    [System.Serializable]
+    public class TMARelaySetting {
+        public string _defaultVRM;
+    };
 
     [AddComponentMenu("OSC/SakuraVRMMuscle2OSC", 34)]
     public class SakuraVRMMuscle2OSC : MonoBehaviour
@@ -161,8 +165,8 @@ namespace UnityEngine.UI
         [Tooltip("ExpertMode用")]
         [SerializeField] private bool    _startExpertMode = false;
 
-        [Tooltip("VRMアバターを入れます。変更時はStartのチェックを2つともオフにしてください")]
-        public Animator _animationTarget;
+        [SerializeField, Tooltip("VRMアバターを入れます。変更時はStartのチェックを2つともオフにしてください")]
+        Animator _animationTarget;
 
         private String    _ipAddress = "127.0.0.1";
         private const int _portDestination = 9000;
@@ -185,13 +189,15 @@ namespace UnityEngine.UI
         private GameObject _expertUI;
         private Text _topText;
 
+        TMARelay_FileDragAndDrop _loader; 
+        TMARelaySetting _setting = new TMARelaySetting();
+
         // Start is called before the first frame update
         void Start()
         {
-            _muscleOSCParam = new string[_muscleOSCParamDef.Length];
-
             var server =  GameObject.Find("ExternalReceiver").GetComponent<uOscServer>();
             server.port = _portListen;
+            _loader = GetComponent<TMARelay_FileDragAndDrop>();
 
             _inputFieldIP = GameObject.Find("InputField_IP").GetComponent<InputField>();
             _inputFieldIP.text = _ipAddress;
@@ -220,7 +226,72 @@ namespace UnityEngine.UI
             _expertUI.SetActive(false);
             _topText = GameObject.Find("TopText").GetComponent<Text>();
 
+            // 設定ファイル
+            string pathSetting = GetMainSettingFilePath();
+            if (System.IO.File.Exists(pathSetting) ) {
+                SakuraSetting<TMARelaySetting> loader = new SakuraSetting<TMARelaySetting>();
+                if ( loader.LoadFromFile(pathSetting) ) _setting = loader.Data;
+            }
 
+            // デフォルトモデルのロード
+            Debug.Log($"Loading {DefaultVRMPath}");
+            _loader.OpenVRM(DefaultVRMPath);
+        }
+
+        private void OnDestroy() {
+            SakuraSetting<TMARelaySetting> saver = new SakuraSetting<TMARelaySetting>();
+            saver.Data = _setting;
+            saver.SaveToFile(GetMainSettingFilePath());
+        }
+
+        string GetMainSettingFilePath()
+        {
+            string path = GetJsonDirectory();
+            return  path + "\\TMARelay.setting.json";
+        }
+
+        string GetJsonDirectory()
+        {
+#if UNITY_EDITOR
+            string path = "Assets\\SakuraShop_tbb\\TMARelay\\setting";
+#else
+            string path = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');//EXEを実行したカレントディレクトリ (ショートカット等でカレントディレクトリが変わるのでこの方式で)
+#endif
+            return path;
+        }
+
+        public void OnVRMLoadButton()
+        {
+            var extensions = new[] { new ExtensionFilter("VRM Files", "vrm" ), };
+            var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, false);
+            if (paths.Length > 0 && paths[0].Length > 0) {
+                _loader.OpenVRM(paths[0]);
+            }
+        }
+
+        private string DefaultVRMPath {
+            get {
+                if (_setting._defaultVRM.Length > 0 && System.IO.File.Exists(_setting._defaultVRM)){
+                    return _setting._defaultVRM;
+                }
+#if UNITY_EDITOR
+                const char separatorChar = '/';
+                string modelFilepath = "Assets/SakuraShop_tbb/VRM_CC0/HairSample_Male.vrm"; //CC0 model
+                modelFilepath = modelFilepath.Replace( separatorChar, System.IO.Path.DirectorySeparatorChar );
+#else
+                string modelFilepath = "HairSample_Male.vrm"; //CC0 model
+#endif
+                if ( System.IO.File.Exists(modelFilepath) ) return modelFilepath;
+                return "";
+            }
+        }
+
+        // VRMファイル読み込み後の処理
+        public void OnVRMLoaded(Animator animator)
+        {
+            // animationtarget, HumanPoseHandler 変数更新
+            _animationTarget = animator;
+            _setting._defaultVRM = _loader.LastLoadedFile; // 最後に読めたファイルを次回読むファイルにする
         }
 
         private void ResetCustExParamArray()
