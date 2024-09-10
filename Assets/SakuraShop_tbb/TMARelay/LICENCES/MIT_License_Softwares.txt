@@ -31,6 +31,9 @@ Copyright (c) 2017 Gökhan Gökçe
 https://github.com/gkngkc/UnityStandaloneFileBrowser
 https://github.com/gkngkc/UnityStandaloneFileBrowser/blob/master/LICENSE.txt
 
+
+In addition, TMARelay_WebCamKit depends on VRigUnity.
+
 5. VRigUnity (MIT License) 
 Copyright (c) 2024 HaruCoded
 https://github.com/Kariaro/VRigUnity
