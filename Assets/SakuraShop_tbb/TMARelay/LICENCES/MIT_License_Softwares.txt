@@ -1,5 +1,5 @@
-Dates (this software) is under MIT License,
-and it uses other MIT-Licensed softwares described below:
+TMARelay (this software) is under MIT License,
+and it uses other softwares described below:
 
 1. UnityWindowsFileDrag&Drop (MIT License)
 Copyright (c) 2018 Markus Göbel (Bunny83) 
@@ -30,3 +30,30 @@ https://github.com/vrm-c/UniVRM/blob/master/LICENSE.txt
 Copyright (c) 2017 Gökhan Gökçe
 https://github.com/gkngkc/UnityStandaloneFileBrowser
 https://github.com/gkngkc/UnityStandaloneFileBrowser/blob/master/LICENSE.txt
+
+5. VRigUnity (MIT License) 
+Copyright (c) 2024 HaruCoded
+https://github.com/Kariaro/VRigUnity
+https://github.com/Kariaro/VRigUnity?tab=MIT-1-ov-file
+
+VRigUnity depends on other softwares as described in its README.md
+
+5-1. MediaPipeUnityPlugin  
+MIT License Copyright (c) 2021 homuler
+https://github.com/homuler/MediaPipeUnityPlugin
+https://github.com/homuler/MediaPipeUnityPlugin/blob/master/LICENSE
+
+5-2. UniVRM (same as 3-1)
+
+5-3. StandaloneFileBrowser (same as 4)
+
+5-4. SimpleFileBrowser v1.5.7 
+MIT License Copyright (c) 2016 Süleyman Yasir KULA
+https://github.com/yasirkula/UnitySimpleFileBrowser
+https://github.com/yasirkula/UnitySimpleFileBrowser/blob/master/LICENSE.txt
+
+5-5. UnityCapture (fe461e8f6e1cd1e6a0dfa9891147c8e393a20a2c)
+MIT License/zlib License
+https://github.com/schellingb/UnityCapture
+
+5-6. EVMCP4U (same as 3)
