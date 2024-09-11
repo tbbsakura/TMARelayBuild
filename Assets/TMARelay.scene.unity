@@ -465,17 +465,109 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 261718603, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1179572058, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1179572058, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1179572058, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 234
+      objectReference: {fileID: 0}
     - target: {fileID: 1179572059, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.UI.SakuraVRMMuscle2OSC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266437213, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 1266437214, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.UI.SakuraVRMMuscle2OSC, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 1897818538, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1897818539, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_Text
+      value: "\u76EE\u306E\u30DC\u30FC\u30F3\u306F\u53D7\u4FE1\u3057\u306A\u3044"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1897818539, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: a062e54402cd3f24faa1927761db3b32, type: 3}
+    - target: {fileID: 1897818539, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1897818539, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103482452, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103482452, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103482452, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103482452, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103482452, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -491.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103482452, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -90.899994
+      objectReference: {fileID: 0}
+    - target: {fileID: 627595538162023458, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 627595538162023458, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 627595538162023458, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 293
+      objectReference: {fileID: 0}
+    - target: {fileID: 627595538162023458, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -101
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315306909905627697, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 22
+      objectReference: {fileID: 0}
     - target: {fileID: 1315306909905627702, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.UI.SakuraVRMMuscle2OSC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237184947845109, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -521
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237184947845109, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 147
       objectReference: {fileID: 0}
     - target: {fileID: 4550237185314649252, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: m_UiScaleMode
@@ -483,15 +575,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4550237185314649252, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: m_ReferenceResolution.x
-      value: 1280
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 4550237185314649252, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: m_ReferenceResolution.y
-      value: 1024
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186018590285, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4550237186018590286, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.UI.SakuraVRMMuscle2OSC, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186031534376, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 149
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186031534377, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_Text
+      value: "VRChat PC/\u30B9\u30DE\u30DB\u306E\nIP\u30A2\u30C9\u30EC\u30B9\u3001\u30DD\u30FC\u30C8"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186031534377, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: a062e54402cd3f24faa1927761db3b32, type: 3}
+    - target: {fileID: 4550237186031534377, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186317564205, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186317564206, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_Text
+      value: "VMCP\u53D7\u4FE1\u30DD\u30FC\u30C8"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186317564206, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: a062e54402cd3f24faa1927761db3b32, type: 3}
+    - target: {fileID: 4550237186317564206, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4550237186443419952, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -536,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 4550237186443419958, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: m_Name
       value: Muscle2OSC
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550237186808416140, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4550237186808416141, guid: f7265ed183b3d824eba5c4044084e4ed, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -588,9 +720,9 @@ RectTransform:
   - {fileID: 899516275}
   m_Father: {fileID: 1133378069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -130, y: 40}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 95, y: -126}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1472553776
