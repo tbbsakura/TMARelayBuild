@@ -7,6 +7,7 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/[Bb]uild_WebCamKit/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /Assets/uOSC/
@@ -17,12 +18,36 @@
 /Assets/UniGLTF.meta
 /Assets/VRM/
 /Assets/VRM.meta
+/Assets/VRM10/
+/Assets/VRM10.meta
 /Assets/VRMShaders/
 /Assets/VRMShaders.meta
 /Assets/ExternalReceiver.unity
 /Assets/ExternalReceiver.unity.meta
 /Assets/StandaloneFileBrowser/
 /Assets/StandaloneFileBrowser.meta
+/Assets/SakuraShop_tbb/VRM_CC0/HairSample_Male.*/
+/Assets/SakuraShop_tbb/VRM_CC0/HairSample_Male.[^v]*.meta
+/Assets/TextMesh Pro/
+/Assets/TextMesh Pro.meta
+/Assets/VRigUnity/
+/Packages/com.github.homuler.mediapipe/
+
+!/Assets/VRigUnity/Prefabs/Orbital Control.prefab
+!/Assets/VRigUnity/Prefabs/Orbital Control.prefab.meta
+!/Assets/VRigUnity/Scripts/Debugging/Thread/
+!/Assets/VRigUnity/Scripts/Debugging/Thread.meta
+!/Assets/VRigUnity/Scripts/SceneModel/Movement.meta
+!/Assets/VRigUnity/Scripts/SceneModel/Movement/Movement.cs
+!/Assets/VRigUnity/Scripts/SceneModel/Movement/Movement.cs.meta
+!/Assets/VRigUnity/Scripts/UI/Modifiers.meta
+!/Assets/VRigUnity/Scripts/UI/Modifiers/OrbitalCamera.cs
+!/Assets/VRigUnity/Scripts/UI/Modifiers/OrbitalCamera.cs.meta
+!/Assets/VRigUnity/Scripts/Debugging.meta
+!/Assets/VRigUnity/Scripts/SceneModel.meta
+!/Assets/VRigUnity/Scripts/UI.meta
+!/Assets/VRigUnity/Prefabs.meta
+!/Assets/VRigUnity/Scripts.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
