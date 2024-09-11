@@ -2,7 +2,7 @@
 // Copyright (c) 2023 Sakura(さくら) / tbbsakura
 // MIT License. See "LICENSE" file.
 
-//#define TMARELAY_KANTANPACK 
+#define TMARELAY_KANTANPACK 
 
 using System.Net;
 using UnityEngine;
