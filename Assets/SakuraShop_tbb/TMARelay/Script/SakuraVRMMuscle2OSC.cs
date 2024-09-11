@@ -2,6 +2,8 @@
 // Copyright (c) 2023 Sakura(さくら) / tbbsakura
 // MIT License. See "LICENSE" file.
 
+//#define TMARELAY_KANTANPACK 
+
 using System.Net;
 using UnityEngine;
 using uOSC;
@@ -10,6 +12,10 @@ using System;
 using SFB;
 
 using SakuraScript.Utils;
+
+#if TMARELAY_KANTANPACK
+using HardCoded.VRigUnity;
+#endif
 
 namespace UnityEngine.UI
 {
@@ -192,6 +198,9 @@ namespace UnityEngine.UI
         TMARelay_FileDragAndDrop _loader; 
         TMARelaySetting _setting = new TMARelaySetting();
 
+#if TMARELAY_KANTANPACK
+        private HardCoded.VRigUnity.CameraButton _vruCameraButton;
+#endif
         // Start is called before the first frame update
         void Start()
         {
@@ -204,13 +213,9 @@ namespace UnityEngine.UI
             _inputFieldDestPort = GameObject.Find("InputField_Port").GetComponent<InputField>();
             _inputFieldDestPort.text = _portDestination.ToString();
 
+#if !TMARELAY_KANTANPACK
             _inputFieldListenPort = GameObject.Find("InputField_ListenPort").GetComponent<InputField>();
             _inputFieldListenPort.text = _portListen.ToString();
-
-            _toggleLeftArm = GameObject.Find("ToggleLeft").GetComponent<Toggle>();
-            _toggleLeftArm.isOn = _startLeftArm;
-            _toggleRightArm = GameObject.Find("ToggleRight").GetComponent<Toggle>();
-            _toggleRightArm.isOn = _startRightArm;
 
             _toggleServer = GameObject.Find("ToggleServer").GetComponent<Toggle>();
             _toggleServer.isOn = true; // ExternalReceiverが Start してしまうので
@@ -224,6 +229,12 @@ namespace UnityEngine.UI
 
             _expertUI = GameObject.Find("ExpertUI");
             _expertUI.SetActive(false);
+#endif
+            _toggleLeftArm = GameObject.Find("ToggleLeft").GetComponent<Toggle>();
+            _toggleLeftArm.isOn = _startLeftArm;
+            _toggleRightArm = GameObject.Find("ToggleRight").GetComponent<Toggle>();
+            _toggleRightArm.isOn = _startRightArm;
+
             _topText = GameObject.Find("TopText").GetComponent<Text>();
 
             // 設定ファイル
@@ -233,9 +244,16 @@ namespace UnityEngine.UI
                 if ( loader.LoadFromFile(pathSetting) ) _setting = loader.Data;
             }
 
+#if TMARELAY_KANTANPACK
+            var cbgo = GameObject.Find("Camera Button");
+             _vruCameraButton = cbgo.GetComponent<HardCoded.VRigUnity.CameraButton>();
+            _topText.text = "設定ボタンの中で使用するカメラを指定してから\r\nカメラ開始を押してください";
+#endif
+#if !TMARELAY_KANTANPACK
             // デフォルトモデルのロード
             Debug.Log($"Loading {DefaultVRMPath}");
             _loader.OpenVRM(DefaultVRMPath);
+#endif
         }
 
         private void OnDestroy() {
@@ -391,6 +409,7 @@ namespace UnityEngine.UI
 			if ( _toggleExpertMode != null ) _toggleExpertMode.isOn = false;
         }
 
+#if !TMARELAY_KANTANPACK
         public void OnServerCutEyeToggleChanged(Boolean value) 
         {
             bool isOn = _toggleServerCutEye.isOn;
@@ -444,7 +463,7 @@ namespace UnityEngine.UI
                 }
             }
         }
-
+#endif
         bool InitClient()
         {
             if ( _animationTarget == null ) 
@@ -456,13 +475,15 @@ namespace UnityEngine.UI
             if (_handler == null ) {
                 _handler = new HumanPoseHandler( _animationTarget.avatar, _animationTarget.transform);
                 if ( _handler == null ) {
-                    _topText.text = "HumanPoseHandler preparation failed.";
+                    _topText.text = "HumanPoseHandler初期化失敗.";
+                    Debug.Log(_topText.text);
                     return false;
                 }
             }
             uOscClient client = GetComponent<uOscClient>();  
             if (client == null ) {
-                _topText.text = "OSC Client preparation failed.";
+                _topText.text = "OSCクライアント初期化失敗";
+                Debug.Log(_topText.text);
                 return false;
             }
 
@@ -473,17 +494,21 @@ namespace UnityEngine.UI
             }
             else 
             {
-                _topText.text = "Invalid Dest Port.";
+                _topText.text = "ポートが不正です";
+                Debug.Log(_topText.text);
                 return false;
             }
             if ( IsValidIpAddr(_inputFieldIP.text)) {
                 client.address = _inputFieldIP.text;
+                Debug.Log(_topText.text);
             }
             else {
-                _topText.text = "Invalid IP Address";
+                _topText.text = "IPアドレスが不正です";
+                Debug.Log(_topText.text);
                 return false;
             }
-            _topText.text = "Client started.";
+            _topText.text = "VRChatに情報送信中\r\n左右逆の場合は、設定-カメラ-水平反転";
+            Debug.Log(_topText.text);
             return true;
         }
 
@@ -491,7 +516,7 @@ namespace UnityEngine.UI
         {
             if ( _startExpertMode == true && _toggleExpertMode.isOn == false ) 
             {
-                _topText.text = "Client stopped.";
+                _topText.text = "---";
             } 
             else if (  _startExpertMode == false && _toggleExpertMode.isOn == true ) 
             {
@@ -507,9 +532,10 @@ namespace UnityEngine.UI
         public void OnToggleChanged(bool value)
         {
             // start -> stop 
+            Debug.Log($"OnToggleChanged {value}");
             if ( (_startRightArm == true || _startLeftArm == true  ) && _toggleLeftArm.isOn == false && _toggleRightArm.isOn ==false ) 
             {
-                _topText.text = "Client stopped.";
+                _topText.text = "送信停止";
                 _startLeftArm = false;
                 _startRightArm = false;
                 return;
@@ -529,10 +555,35 @@ namespace UnityEngine.UI
             }
         }
 
-
         // Update is called once per frame
         void Update()
         {
+            
+#if TMARELAY_KANTANPACK
+            bool vruEnabled = _vruCameraButton.IsCameraShowing;
+            if ( vruEnabled ) {
+                if ( !_toggleLeftArm.isOn || ! _toggleRightArm.isOn ) {
+                    _toggleLeftArm.isOn = true;
+                    _toggleRightArm.isOn = true;
+                    _startLeftArm = true;
+                    _startRightArm = true;
+                    if (InitClient() == false ) 
+                    {
+                        SetClientTogglesOff();
+                    }
+                }                
+            }
+            else {
+                if ( _toggleLeftArm.isOn || _toggleRightArm.isOn ) {
+                    _toggleLeftArm.isOn = false;
+                    _toggleRightArm.isOn = false;
+                    _startLeftArm = false;
+                    _startRightArm = false;
+                    SetClientTogglesOff();
+                    _topText.text = "送信停止";
+                }
+            }
+#endif
             if ( _customParams > 0 && _expertUI != null && _expertUI.activeInHierarchy == false ) 
             {
                 EnterExpertMode();
