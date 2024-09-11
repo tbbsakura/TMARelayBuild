@@ -507,8 +507,11 @@ namespace UnityEngine.UI
                 Debug.Log(_topText.text);
                 return false;
             }
+#if TMARELAY_KANTANPACK
             _topText.text = "VRChatに情報送信中\r\n左右逆の場合は、設定-カメラ-水平反転";
-            Debug.Log(_topText.text);
+#else
+            _topText.text = "VRChatに情報送信中";
+#endif
             return true;
         }
 
