@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/TMARelay.scene.unity
-    guid: c12ee02c6bd7d414aad7164be583a077
+    path: Assets/TMARelay.WebCamKit.scene.unity
+    guid: 156a7066996aac0489c95b7560dd4874
   m_configObjects: {}
