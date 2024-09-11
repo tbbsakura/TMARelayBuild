@@ -1,0 +1,77 @@
+TMARelay (this software) is under MIT License,
+and it uses other softwares described below:
+
+1. UnityWindowsFileDrag&Drop (MIT License)
+Copyright (c) 2018 Markus Göbel (Bunny83) 
+https://github.com/Bunny83/UnityWindowsFileDrag-Drop
+https://github.com/Bunny83/UnityWindowsFileDrag-Drop/blob/master/LICENSE
+
+2. uOSC (MIT License)
+Copyright (c) 2017 hecomi
+https://github.com/hecomi/uOSC
+https://github.com/hecomi/uOSC/blob/master/LICENSE.md
+
+3. EVMCP4U (Eazy Virtual Motion Capture for Unity), External Receiver Pack (MIT License)
+Copyright (c) 2019-2020 gpsnmeajp
+https://booth.pm/ja/items/1801535
+https://github.com/gpsnmeajp/EasyVirtualMotionCaptureForUnity/blob/master/LICENSE
+
+EVMCP4U package includes other MIT-Licesed softwares as below:
+
+    3-1. UniVRM - UniVRM, UniGLTF, UniHumanoid, MToon(MIT License)
+    Copyright (c) 2020 VRM Consortium
+    Copyright (c) 2018 Masataka SUMI for MToon
+    https://github.com/vrm-c/UniVRM
+    https://github.com/vrm-c/UniVRM/blob/master/LICENSE.txt
+
+    3-2. uOSC (same as 2)
+
+4. StandaloneFileBrowser (MIT License)
+Copyright (c) 2017 Gökhan Gökçe
+https://github.com/gkngkc/UnityStandaloneFileBrowser
+https://github.com/gkngkc/UnityStandaloneFileBrowser/blob/master/LICENSE.txt
+
+
+In addition, TMARelay_WebCamKit depends on VRigUnity.
+
+5. VRigUnity (MIT License) 
+Copyright (c) 2024 HaruCoded
+https://github.com/Kariaro/VRigUnity
+https://github.com/Kariaro/VRigUnity?tab=MIT-1-ov-file
+
+VRigUnity depends on other softwares as described in its README.md
+
+    5-1. MediaPipeUnityPlugin  
+    MIT License Copyright (c) 2021 homuler
+    https://github.com/homuler/MediaPipeUnityPlugin
+    https://github.com/homuler/MediaPipeUnityPlugin/blob/master/LICENSE
+
+        MediaPipeUnityPlugin uses following softwares
+
+        5-1-1. Media Pipe (Apache License Version 2.0,)
+        https://github.com/google-ai-edge/mediapipe/blob/e6c19885c6d3c6f410c730952aeed2852790d306/LICENSE
+
+
+        MediaPipeUnityPlugin contains code copied from emscripten 
+        5-1-2. emscripten (MIT License)
+        Copyright (c) 2010-2014 Emscripten authors
+        https://github.com/emscripten-core/emscripten/blob/7c873832e933e86855f5ef5f7c6438f0e457c94e/LICENSE
+
+    5-2. UniVRM (same as 3-1)
+
+    5-3. StandaloneFileBrowser (same as 4)
+
+    5-4. SimpleFileBrowser v1.5.7 
+    MIT License Copyright (c) 2016 Süleyman Yasir KULA
+    https://github.com/yasirkula/UnitySimpleFileBrowser
+    https://github.com/yasirkula/UnitySimpleFileBrowser/blob/master/LICENSE.txt
+
+    5-5. UnityCapture (fe461e8f6e1cd1e6a0dfa9891147c8e393a20a2c)
+    MIT License/zlib License
+    https://github.com/schellingb/UnityCapture
+
+    5-6. EVMCP4U (same as 3)
+
+
+
+
