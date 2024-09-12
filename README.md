@@ -24,7 +24,8 @@ SakuraVRMMuscle2OSC.cs が、マッスル値を読み込んでOSC送信するス
 FileDragAndDrop/TMARelay_FileDragAndDrop.cs が、ドラッグ＆ドロップ処理のスクリプトです。
 
 ### 3. WebCamKit (WebCamかんたんパック)のビルドについて
-VRigUnityを .gitignore で軒並み除外しているので、（mainでも使うもののみ対象にしています）
+WebCamKit ブランチをビルドすればWebCamかんたんパックとして頒布している、VRigUnity統合版がビルドできますが、
+当リポジトリは VRigUnityを .gitignore で軒並み除外しているので、（mainでも使うもののみ対象にしています）
 Assets/VRigUnity の中に必要物を入れてください。(VRigUnityを git clone すると多くのものが Assets/ 直下に入りますが、
 当リポジトリでは Assets/VRigUnity に入れています。StreamingAssets のみ Assets直下)
 
