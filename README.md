@@ -23,8 +23,12 @@ TMARelay は MIT Licence で、他のMIT Licenseのものも色々使ってい�
 SakuraVRMMuscle2OSC.cs が、マッスル値を読み込んでOSC送信するスクリプト、
 FileDragAndDrop/TMARelay_FileDragAndDrop.cs が、ドラッグ＆ドロップ処理のスクリプトです。
 
-Unity上のPlay ではドラッグ＆ドロップができないので、代わりにスクリプト内で指定したファイルを読めるようになっています。
-33行目あたりのLoadModel のコメントを解除して、任意のファイルパスを指定してください。
-(v0.2.2に向けて修正作業中)
+### 3. WebCamKit (WebCamかんたんパック)のビルドについて
+VRigUnityを .gitignore で軒並み除外しているので、（mainでも使うもののみ対象にしています）
+Assets/VRigUnity の中に必要物を入れてください。(VRigUnityを git clone すると多くのものが Assets/ 直下に入りますが、
+当リポジトリでは Assets/VRigUnity に入れています。StreamingAssets のみ Assets直下)
+
+VRigUnity の入れ方は[メモ](docs/VRigUnity_Setup.md)があるので参考にしてください。
+
 
 
