@@ -86,7 +86,6 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
         if ( loaded == null )  return;
         DestroyLastLoaded();
         _lastLoaded10 = loaded;
-        loaded.transform.parent = this.transform;
         loaded.transform.SetParent(transform, false);// このcomponentがattachされているオブジェクトを親に設定する
         loaded.transform.position.Set(-1,1,3); // 位置調整
         m_topText.text = "Showing Meshes...";
