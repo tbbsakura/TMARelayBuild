@@ -5,10 +5,10 @@
 ## 1. Unity project設定
 Unity HUBから新規のunityprojectを作り（VRCSDK不要なのでVCCは使わない）に 以下のものを入れる
 
-- [EVMCP4U](https://github.com/gpsnmeajp/EasyVirtualMotionCaptureForUnity) v4系/VRM0用で開発しています
+- [EVMCP4U](https://github.com/gpsnmeajp/EasyVirtualMotionCaptureForUnity) v5_0bを使っています(TMARelay v0.4.0からv5系/VRM1対応になっています)
 - [StandaloneFileBrowser](https://github.com/gkngkc/UnityStandaloneFileBrowser) (TMARelay v0.2.2以降)
 
-その後 TMARelay_VRM_(バージョン番号).unitypackage を入れる。(またはこのリポジトリをcloneする）
+その後、このリポジトリのファイルをプロジェクトに追加。
 
 シーンファイル Assets/ExternalReceiver を開いてAssets/SakuraShop_tbb/TMARelay/VRM_prefab/VRMScene にある Muscle2OSC をヒエラルキー直下に置く。
 または シーンファイル TMARelay.scene を開く。
