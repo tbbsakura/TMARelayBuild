@@ -10,6 +10,7 @@ using uOSC;
 using System.IO;
 using System;
 using SFB;
+using EVMC4U;
 
 using SakuraScript.Utils;
 
@@ -469,7 +470,15 @@ namespace UnityEngine.UI
             if ( _animationTarget == null ) 
             {
                 SetClientTogglesOff();
-                return false;
+                Debug.Log("InitClient() failed: _animationTarget == null");
+				var goer = GameObject.Find("/ExternalReceiver");
+				if ( goer == null ) return false;
+                var exrec = goer.GetComponent<ExternalReceiver>();
+				if ( exrec == null ) return false;
+                if ( exrec.Model == null ) return false;
+                var ani = exrec.Model.GetComponent<Animator>();
+                if ( ani == null ) return false;
+                _animationTarget = ani;
             }
 
             if (_handler == null ) {
