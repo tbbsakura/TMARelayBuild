@@ -1,3 +1,6 @@
+// Original HardCoded.VRigUnity
+// one line added by Sakura(tbbsakura)
+
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -5,6 +8,7 @@ using UnityEngine.UI;
 namespace HardCoded.VRigUnity {
 	public class CameraButton : AbstractBaseButton {
 		private bool isCameraShowing;
+		public bool IsCameraShowing => isCameraShowing; // added by tbbsakura
 
 		// on  = #14AD58
 		// off = #B30009
