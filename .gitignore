@@ -74,7 +74,7 @@
 
 !/Assets/VRigUnity/Scripts/UI
 !/Assets/VRigUnity/Scripts/UI.meta
-/Assets/VRigUnity/Scripts/UI/*
+!/Assets/VRigUnity/Scripts/UI/*
 
 !/Assets/VRigUnity/Scripts/Debugging/Thread
 !/Assets/VRigUnity/Scripts/Debugging/Thread/*
@@ -85,18 +85,6 @@
 /Assets/VRigUnity/Scripts/UI/Modifiers/*
 !/Assets/VRigUnity/Scripts/UI/Modifiers/OrbitalCamera.cs
 !/Assets/VRigUnity/Scripts/UI/Modifiers/OrbitalCamera.cs.meta
-
-!/Assets/VRigUnity/Scripts/UI/Button
-!/Assets/VRigUnity/Scripts/UI/Button.meta
-/Assets/VRigUnity/Scripts/UI/Button/*
-!/Assets/VRigUnity/Scripts/UI/Button/VMCSender.cs
-!/Assets/VRigUnity/Scripts/UI/Button/VMCSender.cs.meta
-
-!/Assets/VRigUnity/Scripts/UI/Tab
-!/Assets/VRigUnity/Scripts/UI/Tab.meta
-/Assets/VRigUnity/Scripts/UI/Tab/*
-!/Assets/VRigUnity/Scripts/UI/Tab/GUIMain.cs
-!/Assets/VRigUnity/Scripts/UI/Tab/GUIMain.cs.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
