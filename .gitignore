@@ -35,57 +35,6 @@
 /Assets/TextMesh Pro.meta
 /Packages/com.github.homuler.mediapipe/
 
-/Assets/VRigUnity/*
-!/Assets/VRigUnity
-!/Assets/VRigUnity.meta
-
-!/Assets/VRigUnity/Prefabs
-!/Assets/VRigUnity/Prefabs.meta
-/Assets/VRigUnity/Prefabs/*
-!/Assets/VRigUnity/Prefabs/Orbital Control.prefab
-!/Assets/VRigUnity/Prefabs/Orbital Control.prefab.meta
-
-!/Assets/VRigUnity/Scripts
-!/Assets/VRigUnity/Scripts.meta
-/Assets/VRigUnity/Scripts/*
-
-!/Assets/VRigUnity/Scripts/Debugging
-!/Assets/VRigUnity/Scripts/Debugging.meta
-/Assets/VRigUnity/Scripts/Debugging/*
-
-!/Assets/VRigUnity/Scripts/SceneModel
-!/Assets/VRigUnity/Scripts/SceneModel.meta
-/Assets/VRigUnity/Scripts/SceneModel/*
-
-!/Assets/VRigUnity/Scripts/SceneModel/SceneModel.cs
-!/Assets/VRigUnity/Scripts/SceneModel/SceneModel.cs.meta
-!/Assets/VRigUnity/Scripts/SceneModel/Movement
-!/Assets/VRigUnity/Scripts/SceneModel/Movement.meta
-/Assets/VRigUnity/Scripts/SceneModel/Movement/*
-
-!/Assets/VRigUnity/Scripts/SceneModel/Movement/MovementUtils.cs
-!/Assets/VRigUnity/Scripts/SceneModel/Movement/MovementUtils.cs.meta
-
-!/Assets/VRigUnity/Scripts/Holistic
-!/Assets/VRigUnity/Scripts/Holistic.meta
-/Assets/VRigUnity/Scripts/Holistic/*
-!/Assets/VRigUnity/Scripts/Holistic/HolisticSolution.cs
-!/Assets/VRigUnity/Scripts/Holistic/HolisticSolution.cs.meta
-
-!/Assets/VRigUnity/Scripts/UI
-!/Assets/VRigUnity/Scripts/UI.meta
-!/Assets/VRigUnity/Scripts/UI/*
-
-!/Assets/VRigUnity/Scripts/Debugging/Thread
-!/Assets/VRigUnity/Scripts/Debugging/Thread/*
-!/Assets/VRigUnity/Scripts/Debugging/Thread.meta
-
-!/Assets/VRigUnity/Scripts/UI/Modifiers
-!/Assets/VRigUnity/Scripts/UI/Modifiers.meta
-/Assets/VRigUnity/Scripts/UI/Modifiers/*
-!/Assets/VRigUnity/Scripts/UI/Modifiers/OrbitalCamera.cs
-!/Assets/VRigUnity/Scripts/UI/Modifiers/OrbitalCamera.cs.meta
-
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
