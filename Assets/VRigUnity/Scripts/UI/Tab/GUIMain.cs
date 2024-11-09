@@ -110,7 +110,7 @@ namespace HardCoded.VRigUnity {
 /// <summary>
 /// tbbsakur added BEGIN
 /// </summary>
-	    private bool m_loadAsync = true;
+	    private bool m_loadAsync = false;
 	    private bool m_loading = false;
 		RuntimeGltfInstance _lastLoaded = null;
 		GameObject _lastLoaded10 = null;
@@ -286,6 +286,7 @@ namespace HardCoded.VRigUnity {
 					GlbLowLevelParser glbLowLevelParser = new GlbLowLevelParser(null, VRMdataRaw);
 					GltfData gltfData = glbLowLevelParser.Parse();
 
+					// only async
 					synchronizationContext.Post(async (_) =>
 					{
 						var instance = await Vrm10.LoadBytesAsync(VRMdataRaw, canLoadVrm0X: false, showMeshes: true);
