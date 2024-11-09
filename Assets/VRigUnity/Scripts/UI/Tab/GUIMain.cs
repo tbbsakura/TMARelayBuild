@@ -30,7 +30,10 @@ namespace HardCoded.VRigUnity {
 		public TrackingResizableBox TrackingBox => trackingBox;
 		public CustomizableCanvas CustomizableCanvas => customizableCanvas;
 
-	    SynchronizationContext synchronizationContext; // tbbsakura
+		// tbbsakura BEGIN
+	    SynchronizationContext synchronizationContext; 
+		CameraButton _cameraButton;
+		// tbbsakura END
 
 		void Awake() {
 			customizableCanvas = FindObjectOfType<CustomizableCanvas>();
@@ -38,7 +41,11 @@ namespace HardCoded.VRigUnity {
 		}
 
 		void Start() {
-	        synchronizationContext = SynchronizationContext.Current; // tbbsakura
+			// tbbsakura BEGIN
+            var cbgo = GameObject.Find("Camera Button");
+            CameraButton cameraButton = cbgo?.GetComponent<HardCoded.VRigUnity.CameraButton>();
+	        synchronizationContext = SynchronizationContext.Current; 
+			// tbbsakura END
 
 			// Configure scene with settings
 			LoadVrmModel(Settings.ModelFile);
@@ -123,7 +130,6 @@ namespace HardCoded.VRigUnity {
 			return goer.GetComponent<ExternalReceiver>();
 		}
 
-
 		void SetExrecAnimator(GameObject loaded_gameObject )
 		{
 			var exrec = GetExrec();
@@ -149,6 +155,12 @@ namespace HardCoded.VRigUnity {
 		void OnLoaded10(GameObject loaded, string path)
 		{
 			if ( loaded == null )  return;
+			bool cameraPaused = false;
+			if ( _cameraButton != null && _cameraButton.IsCameraShowing ) {
+				_cameraButton.SetCamera(false);
+				cameraPaused = true;
+			}
+
 			DestroyLastLoaded();
 			_lastLoaded10 = loaded;
 			loaded.transform.SetParent(transform, false);// このcomponentがattachされているオブジェクトを親に設定する
@@ -176,11 +188,20 @@ namespace HardCoded.VRigUnity {
 
 			Settings.ModelFile = path;
 			SolutionUtils.GetSolution().Model.SetVRMModel(loaded);
+			if (cameraPaused) {
+				_cameraButton.SetCamera(true);
+			}
 		}
 
 		void OnLoaded(RuntimeGltfInstance loaded, string path)
 		{
 			if ( loaded == null || loaded.Root == null )  return;
+			bool cameraPaused = false;
+			if ( _cameraButton != null && _cameraButton.IsCameraShowing ) {
+				_cameraButton.SetCamera(false);
+				cameraPaused = true;
+			}
+
 			DestroyLastLoaded();
 			_lastLoaded = loaded;
 			loaded.Root.transform.SetParent(transform, false);// このcomponentがattachされているオブジェクトを親に設定する
@@ -211,6 +232,9 @@ namespace HardCoded.VRigUnity {
 			}
 			Settings.ModelFile = path;
 			SolutionUtils.GetSolution().Model.SetVRMModel(loaded.gameObject);
+			if (cameraPaused) {
+				_cameraButton.SetCamera(true);
+			}
 		}
 
 		private async void LoadModelSakura(string path)
