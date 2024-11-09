@@ -1,3 +1,7 @@
+// HolisticSolution.cs
+// Original HardCoded.VRigUnity
+// Modified by tbbsakura (omit face/BlendShape features, using #if false ... #endif)
+
 using System;
 using UnityEngine;
 using VRM;
@@ -217,6 +221,7 @@ namespace HardCoded.VRigUnity {
 				LeftHand.ApplyFingers(model);
 			}
 
+#if false
 			if (BoneSettings.Get(BoneSettings.FACE)) {
 				model.BlendShapeProxy.ImmediatelySetValue(model.BlendShapes[BlendShapePreset.O], Face.mouthOpen);
 
@@ -242,6 +247,7 @@ namespace HardCoded.VRigUnity {
 					0
 				);
 			}
+#endif
 		}
 	}
 }

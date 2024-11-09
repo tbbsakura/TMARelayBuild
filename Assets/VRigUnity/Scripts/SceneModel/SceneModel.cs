@@ -1,8 +1,12 @@
+// SceneModel.cs
+// Original HardCoded.VRigUnity
+// Modified by tbbsakura (omit BlendShape features, using comment and #if false ... #endif)
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using VRM;
+//using VRM;
 
 namespace HardCoded.VRigUnity {
 	/// <summary>
@@ -10,7 +14,7 @@ namespace HardCoded.VRigUnity {
 	/// </summary>
 	public class SceneModel {
 		// Cache
-		private readonly Dictionary<BlendShapePreset, BlendShapeKey> blendShapeCache = new();
+//		private readonly Dictionary<BlendShapePreset, BlendShapeKey> blendShapeCache = new();
 		private readonly Dictionary<HumanBodyBones, Transform> boneTransformCache = new();
 		private readonly RuntimeAnimatorController m_defaultController;
 		private readonly GameObject m_defaultModelPrefab;
@@ -19,7 +23,7 @@ namespace HardCoded.VRigUnity {
 		private bool visible = true; // Always visible by default
 
 		// API Getters
-		public Dictionary<BlendShapePreset, BlendShapeKey> BlendShapes => blendShapeCache;
+//		public Dictionary<BlendShapePreset, BlendShapeKey> BlendShapes => blendShapeCache;
 		public Dictionary<HumanBodyBones, Transform> ModelBones => boneTransformCache;
 		public Dictionary<HumanBodyBones, OverrideTransform> Transforms => RigAnimator.Transforms;
 		public bool IsVisible {
@@ -40,9 +44,10 @@ namespace HardCoded.VRigUnity {
 			&& VrmAnimator != null
 			&& RigAnimator != null
 			&& Animator != null
-			&& BlendShapeProxy != null;
+			;
+//			&& BlendShapeProxy != null;
 
-		public VRMBlendShapeProxy BlendShapeProxy { get; private set; }
+//		public VRMBlendShapeProxy BlendShapeProxy { get; private set; }
 		public VRMAnimator VrmAnimator { get; private set; }
 		public RigAnimator RigAnimator { get; private set; }
 		public Animator Animator { get; private set; }
@@ -74,12 +79,14 @@ namespace HardCoded.VRigUnity {
 		/// <param name="gameObject"></param>
 		/// <returns>If the model was updated sucessfully</returns>
 		public bool SetVRMModel(GameObject gameObject) {
-			var blendShapeProxy = gameObject.GetComponent<VRMBlendShapeProxy>();
+//			var blendShapeProxy = gameObject.GetComponent<VRMBlendShapeProxy>();
 			var animator = gameObject.GetComponent<Animator>();
 
+#if false
 			if (animator == null || blendShapeProxy == null) {
 				return false;
 			}
+#endif
 
 			if (VrmModel != null && VrmModel != gameObject) {
 				UnityEngine.Object.Destroy(VrmModel);
@@ -88,7 +95,7 @@ namespace HardCoded.VRigUnity {
 			VrmModel = gameObject;
 			VrmAnimator = gameObject.AddComponent<VRMAnimator>();
 			RigAnimator = gameObject.AddComponent<RigAnimator>();
-			BlendShapeProxy = blendShapeProxy;
+//			BlendShapeProxy = blendShapeProxy;
 			Animator = animator;
 			Animator.runtimeAnimatorController = m_defaultController;
 			
@@ -113,10 +120,12 @@ namespace HardCoded.VRigUnity {
 			}
 
 			// Update blend shape cache
+#if false
 			blendShapeCache.Clear();
 			foreach (BlendShapePreset item in Enum.GetValues(typeof(BlendShapePreset))) {
 				blendShapeCache.Add(item, BlendShapeKey.CreateFromPreset(item));
 			}
+#endif
 		}
 
 		private void UpdateVisibility() {
@@ -136,20 +145,23 @@ namespace HardCoded.VRigUnity {
 					trans.data.rotation = BoneSettings.GetDefaultRotation(bone).eulerAngles;
 				}
 			}
-
+#if false
 			if (index == BoneSettings.FACE) {
 				BlendShapeProxy.ImmediatelySetValue(BlendShapes[BlendShapePreset.O], 0);
 				BlendShapeProxy.ImmediatelySetValue(BlendShapes[BlendShapePreset.Blink_L], 0);
 				BlendShapeProxy.ImmediatelySetValue(BlendShapes[BlendShapePreset.Blink_R], 0);
 			}
+#endif
 		}
 
 		public void ResetVRMAnimator() {
 			// TODO: What does rebind do?
+#if false
 			Animator.Rebind();
 			foreach (var item in blendShapeCache) {
 				BlendShapeProxy.ImmediatelySetValue(item.Value, 0);
 			}
+#endif
 
 			// Reset all bone rotations
 			for (int i = 0; i < BoneSettings.Count; i++) {

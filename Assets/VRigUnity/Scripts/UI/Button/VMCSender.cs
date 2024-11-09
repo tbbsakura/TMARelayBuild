@@ -1,6 +1,10 @@
+// VMCSender.cs
+// Original by HardCoded
+// Modified by tbbsakura (omit blendshape) , using "#if false ... #endif"
+
 using UnityEngine;
 using uOSC;
-using VRM;
+//using VRM;
 
 namespace HardCoded.VRigUnity {
 	[RequireComponent(typeof(uOscClient))]
@@ -57,6 +61,7 @@ namespace HardCoded.VRigUnity {
 			}
 			uClient.Send(boneBundle);
 
+#if false
 			// BlendShape
             var blendShapeBundle = new Bundle(Timestamp.Now);
             foreach (var b in holisticModel.BlendShapeProxy.GetValues()) {
@@ -67,7 +72,7 @@ namespace HardCoded.VRigUnity {
             }
             blendShapeBundle.Add(new Message("/VMC/Ext/Blend/Apply"));
             uClient.Send(blendShapeBundle);
-
+#endif
             // Available
             uClient.Send("/VMC/Ext/OK", 1);
 
