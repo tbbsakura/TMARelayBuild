@@ -24,7 +24,7 @@ namespace HardCoded.VRigUnity {
 			SetCamera(!isCameraShowing);
 		}
 
-		private void SetCamera(bool enable) {
+		public void SetCamera(bool enable) {
 			buttonImage.color = enable ? toggleOff : toggleOn;
 			isCameraShowing = enable;
 			UpdateLanguage();
