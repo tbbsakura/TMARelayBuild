@@ -24,12 +24,13 @@ SakuraVRMMuscle2OSC.cs が、マッスル値を読み込んでOSC送信するス
 FileDragAndDrop/TMARelay_FileDragAndDrop.cs が、ドラッグ＆ドロップ処理のスクリプトです。
 
 ### 3. WebCamKit (WebCamかんたんパック)のビルドについて
-WebCamKit ブランチをビルドすればWebCamかんたんパックとして頒布している、VRigUnity統合版がビルドできますが、
-当リポジトリは VRigUnityを .gitignore で軒並み除外しているので、（mainでも使うもののみ対象にしています）
-Assets/VRigUnity の中に必要物を入れてください。(VRigUnityを git clone すると多くのものが Assets/ 直下に入りますが、
-当リポジトリでは Assets/VRigUnity に入れています。StreamingAssets のみ Assets直下)
+WebCamKit ブランチをビルドすればWebCamかんたんパックとして頒布している、VRigUnity統合版がビルドできます。
+v0.5.0Wからは VRigUnityも除外せず含めていますが、オリジナルの VRigUnity が除外している MediaPipe のリソースは含めていません。
 
-VRigUnity の入れ方は[メモ](docs/VRigUnity_Setup.md)があるので参考にしてください。
-
+Kariaro さんの mediapipe plugin の github (https://github.com/Kariaro/MediaPipeUnityPlugin/releases)
+行って com.github.homuler.mediapipe-0.10.1-macos11.tgz をを手動でダウンロードして 
+tgz 内の package/Runtime/Plugins/ の中身をプロジェクトの 
+Packages/com.github.homuler.mediapipe/Runtime/Plugins に入れてください。
+他は解凍しなくてOKです（既に Plugins フォルダはあるが、中身が入ってないので、それだけ入れる感じ）
 
 
