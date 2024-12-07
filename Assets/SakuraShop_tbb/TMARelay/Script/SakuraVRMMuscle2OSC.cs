@@ -1,8 +1,9 @@
-﻿// ver 1.002
-// Copyright (c) 2023 Sakura(さくら) / tbbsakura
+﻿// Copyright (c) 2023-2024 Sakura(さくら) / tbbsakura
 // MIT License. See "LICENSE" file.
 
 #define TMARELAY_KANTANPACK 
+#define FINGER_MODE_4BIT
+//#define FINGER_MODE_2BIT
 
 using System.Net;
 using UnityEngine;
@@ -28,29 +29,29 @@ namespace UnityEngine.UI
     [AddComponentMenu("OSC/SakuraVRMMuscle2OSC", 34)]
     public class SakuraVRMMuscle2OSC : MonoBehaviour
     {
-/* 	old definition, not used
-        private static readonly String[] _muscleNames = {
-            "Left Shoulder Down-Up",//37
-            "Left Shoulder Front-Back",//38
-            "Left Arm Down-Up",//39
-            "Left Arm Front-Back",//40
-            "Left Arm Twist In-Out",//41
-            "Left Forearm Stretch",//42
-            "Left Forearm Twist In-Out",//43
-            "Left Hand Down-Up",//44
-            "Left Hand In-Out",//45
-
-            "Right Shoulder Down-Up", //46 
-            "Right Shoulder Front-Back", //47
-            "Right Arm Down-Up", //48
-            "Right Arm Front-Back", //49
-            "Right Arm Twist In-Out", //50
-            "Right Forearm Stretch", //51 
-            "Right Forearm Twist In-Out", //52 
-            "Right Hand Down-Up", //53 
-            "Right Hand In-Out", //54 
+        private static readonly String[] _muscle2bitOSCParam = {
+            "/avatar/parameters/TMARelay_LowerArmLstRst_2x4",
+            "/avatar/parameters/TMARelay_UpperArmLdufbRdufb_2x4",
+            "/avatar/parameters/TMARelay_UpperArmTwPinky_LR_2x4",
+            "/avatar/parameters/TMARelay_RingMiddle_LR_2x4",
+            "/avatar/parameters/TMARelay_IndexThumb_LR_2x4",
+            "/avatar/parameters/TMARelay_HandUdIo_LR_2x4",
+            "/avatar/parameters/TMARelay_ShoulderLdufbRdufb_2x4",
         };
-*/
+
+        private static readonly String[] _muscle4bitOSCParam = {
+            "/avatar/parameters/LowerArmLR_Stretch",
+            "/avatar/parameters/LowerArmLR_Twist",
+            "/avatar/parameters/UpperArmLR_DownUp",
+            "/avatar/parameters/UpperArmLR_FrontBack",
+            "/avatar/parameters/UpperArmLR_Twist",
+
+            "/avatar/parameters/TMAR_LR_THUMB",
+            "/avatar/parameters/TMAR_LR_INDEX",
+            "/avatar/parameters/TMAR_LR_MIDDLE",
+            "/avatar/parameters/TMAR_LR_RING",
+            "/avatar/parameters/TMAR_LR_LITTLE",
+         };
 
         private static readonly String[] _muscleOSCParamDef = {
 			"/avatar/parameters/TMARelay_SpineFrontBack", //0 Body
@@ -165,10 +166,14 @@ namespace UnityEngine.UI
         private static String[] _muscleOSCParam = new String[95];
         private int _customParams = 0;
 
-        [Tooltip("アバター、IPアドレス、ポートを変更する時はStartのチェックを2つともオフにしてください")]
+        [Tooltip("アバター、IPアドレス、ポートを変更する時はStartのチェックを全てオフにしてください")]
         [SerializeField] private bool    _startRightArm = false;
-        [Tooltip("アバター、IPアドレス、ポートを変更する時はStartのチェックを2つともオフにしてください")]
+        [Tooltip("アバター、IPアドレス、ポートを変更する時はStartのチェックを全てオフにしてください")]
         [SerializeField] private bool    _startLeftArm = false;
+#if FINGER_MODE_4BIT || FINGER_MODE_2BIT
+        [Tooltip("アバター、IPアドレス、ポートを変更する時はStartのチェックを全てオフにしてください")]
+        [SerializeField] private bool    _startFinger48 = false;
+#endif
         [Tooltip("ExpertMode用")]
         [SerializeField] private bool    _startExpertMode = false;
 
@@ -191,6 +196,7 @@ namespace UnityEngine.UI
         private Toggle _toggleLeftArm = null;
         private Toggle _toggleRightArm = null;
         private Toggle _toggleExpertMode = null;
+        private Toggle _toggleFinger48Mode = null;
         private Text _textExpertMode;
         private Button _buttonModeNormal;
         private GameObject _expertUI;
@@ -235,6 +241,8 @@ namespace UnityEngine.UI
             _toggleLeftArm.isOn = _startLeftArm;
             _toggleRightArm = GameObject.Find("ToggleRight").GetComponent<Toggle>();
             _toggleRightArm.isOn = _startRightArm;
+            _toggleFinger48Mode = GameObject.Find("ToggleFinger48").GetComponent<Toggle>();
+            _toggleFinger48Mode.isOn = _startFinger48;
 
             _topText = GameObject.Find("TopText").GetComponent<Text>();
 
@@ -359,6 +367,7 @@ namespace UnityEngine.UI
 
                 _toggleRightArm.gameObject.SetActive(false);
                 _toggleLeftArm.gameObject.SetActive(false);
+                _toggleFinger48Mode.gameObject.SetActive(false);
 
                 _expertUI.SetActive(true);
 
@@ -379,6 +388,7 @@ namespace UnityEngine.UI
 
             _toggleRightArm.gameObject.SetActive(true);
             _toggleLeftArm.gameObject.SetActive(true);
+            _toggleFinger48Mode.gameObject.SetActive(true);
             _topText.text = "Normal mode";
         }
 
@@ -403,10 +413,12 @@ namespace UnityEngine.UI
         {
             _startRightArm = false;
             _startLeftArm = false;
+            _startFinger48 = false;
             _startExpertMode = false;
 
             if ( _toggleLeftArm != null ) _toggleLeftArm.isOn = false;
             if ( _toggleRightArm != null ) _toggleRightArm.isOn = false;
+            if ( _toggleFinger48Mode != null ) _toggleFinger48Mode.isOn = false;
 			if ( _toggleExpertMode != null ) _toggleExpertMode.isOn = false;
         }
 
@@ -545,18 +557,30 @@ namespace UnityEngine.UI
         {
             // start -> stop 
             Debug.Log($"OnToggleChanged {value}");
-            if ( (_startRightArm == true || _startLeftArm == true  ) && _toggleLeftArm.isOn == false && _toggleRightArm.isOn ==false ) 
+            if ( _toggleFinger48Mode.isOn == false ) {
+                _toggleLeftArm.gameObject.SetActive(true);
+                _toggleRightArm.gameObject.SetActive(true);
+            }
+            else {
+                _startLeftArm = _toggleLeftArm.isOn = false;
+                _startRightArm = _toggleRightArm.isOn = false;
+                _toggleLeftArm.gameObject.SetActive(false);
+                _toggleRightArm.gameObject.SetActive(false);
+            }
+            if ( (_startRightArm || _startLeftArm  || _startFinger48 ) && _toggleLeftArm.isOn == false && _toggleRightArm.isOn ==false && _toggleFinger48Mode.isOn ==false )
             {
                 _topText.text = "送信停止";
                 _startLeftArm = false;
                 _startRightArm = false;
+                _startFinger48 = false;
                 return;
 
             }
 
             _startLeftArm = _toggleLeftArm.isOn;
             _startRightArm = _toggleRightArm.isOn;
-            if ( _startRightArm == false && _startLeftArm == false ) {
+            _startFinger48 = _toggleFinger48Mode.isOn;
+            if ( _startRightArm == false && _startLeftArm == false && _startFinger48 == false ) {
                 return;
             }
 
@@ -567,13 +591,71 @@ namespace UnityEngine.UI
             }
         }
 
+        int EncodeFloatTo2BitInt( float float1 ) {
+            if ( float1 > 0.5f ) return 3;
+            else if ( float1 >= 0.0 && float1 < 0.5 ) return 2;
+            else if ( float1 >= -0.5 && float1 < 0.0 ) return 1;
+            return 0; // if ( float1 < -0.5 ) return 0;
+        }
+
+        int EncodeFloatTo3BitInt( float float1 ) {
+            if ( float1 >= 0.75 ) return 7;
+            else if ( float1 >= 0.5 && float1 < 0.75 ) return 6;
+            else if ( float1 >= 0.25 && float1 < 0.5 ) return 5;
+            else if ( float1 >= 0.0 && float1 < 0.25 ) return 4;
+            else if ( float1 >= -0.25 && float1 < 0.0 ) return 3;
+            else if ( float1 >= -0.5 && float1 < 0.25 ) return 2;
+            else if ( float1 >= -0.75 && float1 < -0.5 ) return 1;
+            return 0; // if ( float1 < -0.75 ) return 0;
+        }
+
+
+        int EncodeFloatTo4BitInt( float float1 ) {
+            if (float1 >= 1.0 ) return 15;
+            else if ( float1 >= 0.866667 ) return 14;
+            else if ( float1 >= 0.733333 ) return 13;
+            else if ( float1 >= 0.6 ) return 12;
+            else if ( float1 >= 0.466667 ) return 11;
+            else if ( float1 >= 0.33333 ) return 10;
+            else if ( float1 >= 0.2 ) return 9;
+            else if ( float1 >= 0.066667 ) return 8;
+            else if ( float1 >= -0.066667 ) return 7;
+            else if ( float1 >= -0.2 ) return 6;
+            else if ( float1 >= -0.33333 ) return 5;
+            else if ( float1 >= -0.466667 ) return 4;
+            else if ( float1 >= -0.6 ) return 3;
+            else if ( float1 >= -0.733333 ) return 2;
+            else if ( float1 >= -0.866667 ) return 1;
+            return 0; 
+        }
+
+        int Encode4FloatsToInt( float float1, float float2, float float3, float float4 ) {
+            return  (EncodeFloatTo2BitInt(float1) << 6) + 
+                        (EncodeFloatTo2BitInt(float2) << 4) + 
+                        (EncodeFloatTo2BitInt(float3) << 2) + 
+                        EncodeFloatTo2BitInt(float4);
+        }
+
+        int Encode2FloatsToInt( float float1, float float2 ) {
+            return  (EncodeFloatTo4BitInt(float1) << 4) + EncodeFloatTo4BitInt(float2);
+        }
+
         // Update is called once per frame
         void Update()
         {
             
 #if TMARELAY_KANTANPACK
             bool vruEnabled = _vruCameraButton.IsCameraShowing;
-            if ( vruEnabled ) {
+            if ( vruEnabled ) { // Finger Mode専用
+                if (_toggleFinger48Mode.isOn == false ) {
+                    _toggleFinger48Mode.isOn = true;
+                    _startFinger48 = true;
+                    if (InitClient() == false ) 
+                    {
+                        SetClientTogglesOff();
+                    }
+                }
+                /*
                 if ( !_toggleLeftArm.isOn || ! _toggleRightArm.isOn ) {
                     _toggleLeftArm.isOn = true;
                     _toggleRightArm.isOn = true;
@@ -583,14 +665,16 @@ namespace UnityEngine.UI
                     {
                         SetClientTogglesOff();
                     }
-                }                
+                } */               
             }
             else {
-                if ( _toggleLeftArm.isOn || _toggleRightArm.isOn ) {
+               if ( _toggleLeftArm.isOn || _toggleRightArm.isOn || _toggleFinger48Mode.isOn ) {
                     _toggleLeftArm.isOn = false;
                     _toggleRightArm.isOn = false;
                     _startLeftArm = false;
                     _startRightArm = false;
+                    _toggleFinger48Mode.isOn = false;
+                    _startFinger48 = false;
                     SetClientTogglesOff();
                     _topText.text = "送信停止";
                 }
@@ -601,7 +685,7 @@ namespace UnityEngine.UI
                 EnterExpertMode();
             }
 
-            if ( _startRightArm == false && _startLeftArm == false && _startExpertMode == false ) 
+            if ( _startRightArm == false && _startLeftArm == false && _startExpertMode == false && _startFinger48 == false) 
             {
                 if ( _handler != null ) _handler = null;
                 return;
@@ -621,6 +705,111 @@ namespace UnityEngine.UI
                         }
                     }
                 }
+//#if FINGER_MODE_4BIT || FINGER_MODE_2BIT
+                else if (_startFinger48==true)
+                {
+                    int int1 = 0;
+#if FINGER_MODE_4BIT  // 4bit
+                    //Debug.Log("FINGER_MODE_4BIT");
+                    int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[42],  // TMARelay_LowerArmL_Stretch
+                        _targetHumanPose.muscles[51]); // TMARelay_LowerArmR_Stretch 
+                    client.Send(_muscle4bitOSCParam[0], int1 ); // TMARelay_LowerArmLR_Stretch
+
+                    int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[43], // TMARelay_LowerArmL_Twist
+                        _targetHumanPose.muscles[52]);// TMARelay_LowerArmR_Twist
+                    client.Send(_muscle4bitOSCParam[1], int1 ); // TMARelay_LowerArmLR_Twist
+
+                    int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[39],// Upper Left Down Up 
+                        _targetHumanPose.muscles[48]); // Upper Right Down Up 
+                    client.Send(_muscle4bitOSCParam[2], int1 ); //  TMARelay_UpperArmLR_DownUp
+
+                    int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[40], // Upper Left FrontBack
+                        _targetHumanPose.muscles[49]);// Upper Right FrontBack
+                    client.Send(_muscle4bitOSCParam[3], int1 );// "/avatar/parameters/TMARelay_UpperArmLR_FrontBack",
+
+               int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[41],// Upper Left Twist
+                        _targetHumanPose.muscles[50]); // Upper Right Twist
+                    client.Send(_muscle4bitOSCParam[4], int1 );// "/avatar/parameters/TMARelay_UpperArmLR_Twist",
+
+                    int1 = Encode2FloatsToInt(
+                        (_targetHumanPose.muscles[55]+_targetHumanPose.muscles[57]+_targetHumanPose.muscles[58])/3.0f, // Left Thumb
+                        (_targetHumanPose.muscles[75]+_targetHumanPose.muscles[77]+_targetHumanPose.muscles[78])/3.0f); // // Right thumb
+                    client.Send(_muscle4bitOSCParam[5], int1 );// "/avatar/parameters/TMAR_LR_THUMB",
+
+                    int1 = Encode2FloatsToInt(
+                        (_targetHumanPose.muscles[59]+_targetHumanPose.muscles[61]+_targetHumanPose.muscles[62])/3.0f, // Left Index
+                        (_targetHumanPose.muscles[79]+_targetHumanPose.muscles[81]+_targetHumanPose.muscles[82])/3.0f);  // Right index
+                    client.Send(_muscle4bitOSCParam[6], int1 );// "/avatar/parameters/TMAR_LR_INDEX",
+
+                    int1 = Encode2FloatsToInt(
+                        (_targetHumanPose.muscles[63]+_targetHumanPose.muscles[65]+_targetHumanPose.muscles[66])/3.0f, // Left Middle
+                        (_targetHumanPose.muscles[83]+_targetHumanPose.muscles[85]+_targetHumanPose.muscles[86])/3.0f); // // Right Middle
+                    client.Send(_muscle4bitOSCParam[7], int1 );// "/avatar/parameters/TMAR_LR_MIDDLE",
+
+                    int1 = Encode2FloatsToInt(
+                        (_targetHumanPose.muscles[67]+_targetHumanPose.muscles[69]+_targetHumanPose.muscles[70])/3.0f, // Left Ring
+                        (_targetHumanPose.muscles[87]+_targetHumanPose.muscles[89]+_targetHumanPose.muscles[90])/3.0f); // Right Ring
+                    client.Send(_muscle4bitOSCParam[8], int1 );// "/avatar/parameters/TMAR_LR_RING",
+  int1 = Encode2FloatsToInt(
+                        (_targetHumanPose.muscles[71]+_targetHumanPose.muscles[73]+_targetHumanPose.muscles[74])/3.0f, // Left Pinky
+                        (_targetHumanPose.muscles[91]+_targetHumanPose.muscles[93]+_targetHumanPose.muscles[94])/3.0f); // // Right Pinky
+                    client.Send(_muscle4bitOSCParam[9], int1 );// "/avatar/parameters/TMAR_LR_LITTLE",
+#else
+//if FINGER_MODE_2BIT
+                    Debug.Log("FINGER_MODE_2BIT");
+                    int1 = Encode4FloatsToInt(
+                        _targetHumanPose.muscles[42],// TMARelay_LowerArmL_Stretch
+                        _targetHumanPose.muscles[43], // TMARelay_LowerArmL_Twist
+                        _targetHumanPose.muscles[51], // TMARelay_LowerArmR_Stretch
+                        _targetHumanPose.muscles[52]);// TMARelay_LowerArmR_Twist
+                    client.Send(_muscle2bitOSCParam[0], int1 ); // "/avatar/parameters/TMARelay_LowerArmLstRst_2x4",
+
+                    int1 = Encode4FloatsToInt(
+                        _targetHumanPose.muscles[39],// Upper Left Down Up 
+                        _targetHumanPose.muscles[40], // Upper Left FrontBack
+                        _targetHumanPose.muscles[48], // Upper Right Down Up 
+                        _targetHumanPose.muscles[49]);// Upper Right FrontBack
+                    client.Send(_muscle2bitOSCParam[1], int1 );// "/avatar/parameters/TMARelay_UpperArmLdufbRdufb_2x4",
+
+                    int1 = Encode4FloatsToInt(_targetHumanPose.muscles[41],// Upper Left Twist
+                        (_targetHumanPose.muscles[71]+_targetHumanPose.muscles[73]+_targetHumanPose.muscles[74])/3.0f, // Left Pinky
+                        _targetHumanPose.muscles[51], // Upper Right Twist
+                        (_targetHumanPose.muscles[91]+_targetHumanPose.muscles[93]+_targetHumanPose.muscles[94])/3.0f); // // Right Pinky
+                    client.Send(_muscle2bitOSCParam[2], int1 ); // "/avatar/parameters/TMARelay_UpperArmTwPinky_LR_2x4",
+
+                    int1 = Encode4FloatsToInt(
+                        (_targetHumanPose.muscles[67]+_targetHumanPose.muscles[69]+_targetHumanPose.muscles[70])/3.0f, // Left Ring
+                        (_targetHumanPose.muscles[63]+_targetHumanPose.muscles[65]+_targetHumanPose.muscles[66])/3.0f, // Left Middle
+                        (_targetHumanPose.muscles[87]+_targetHumanPose.muscles[89]+_targetHumanPose.muscles[90])/3.0f, // Right Ring
+                        (_targetHumanPose.muscles[83]+_targetHumanPose.muscles[85]+_targetHumanPose.muscles[86])/3.0f); // // Right Middle
+                    client.Send(_muscle2bitOSCParam[3], int1 ); // "/avatar/parameters/TMARelay_RingMiddle_LR_2x4",
+
+                    int1 = Encode4FloatsToInt(
+                        (_targetHumanPose.muscles[59]+_targetHumanPose.muscles[61]+_targetHumanPose.muscles[62])/3.0f, // Left Index
+                        (_targetHumanPose.muscles[55]+_targetHumanPose.muscles[57]+_targetHumanPose.muscles[58])/3.0f, // Left Thumb
+                        (_targetHumanPose.muscles[79]+_targetHumanPose.muscles[81]+_targetHumanPose.muscles[82])/3.0f, // Right index
+                        (_targetHumanPose.muscles[75]+_targetHumanPose.muscles[77]+_targetHumanPose.muscles[78])/3.0f); // // Right thumb
+                    client.Send(_muscle2bitOSCParam[4], int1 ); // "/avatar/parameters/TMARelay_IndexThumb_LR_2x4",
+
+                    int1 = Encode4FloatsToInt(_targetHumanPose.muscles[44],// Hand Left Up Down
+                        _targetHumanPose.muscles[45], // Hand Left In Out
+                        _targetHumanPose.muscles[53], // Hand Right Up Down
+                        _targetHumanPose.muscles[54]);// Hand Right In Out
+                    client.Send(_muscle2bitOSCParam[5], int1 );// "/avatar/parameters/TMARelay_HandUdIo_LR_2x4",
+
+                    int1 = Encode4FloatsToInt(_targetHumanPose.muscles[37],// Shoulder Left Down up
+                        _targetHumanPose.muscles[38], // Shoulder Left front back
+                        _targetHumanPose.muscles[46], // Shoulder Right Down up
+                        _targetHumanPose.muscles[47]);// Shoulder Right front back
+                    client.Send(_muscle2bitOSCParam[6], int1 );// "/avatar/parameters/TMARelay_ShoulderLdufbRdufb_2x4",
+#endif
+                }
+//#endif
                 else // Normal Mode
                 {
                     if ( _startLeftArm == true )
@@ -630,7 +819,11 @@ namespace UnityEngine.UI
                             float mus = _targetHumanPose.muscles[i];
                             client.Send(_muscleOSCParamDef[i], mus);
                         }
-                        // 44,45 LeftHand( Wrist )
+                        // finger test
+                        for (int i = 55; i <= 74 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
+                            float mus = _targetHumanPose.muscles[i];
+                            client.Send(_muscleOSCParamDef[i], mus);
+                        }
                     }
                     if ( _startRightArm == true ) {
                         // 46, 47 ... RightShoulder
@@ -638,7 +831,11 @@ namespace UnityEngine.UI
                             float mus = _targetHumanPose.muscles[i];
                             client.Send(_muscleOSCParamDef[i], mus);
                         }
-                        // 53,54 RightHand( Wrist )
+                        // finger test
+                        for (int i = 75; i <= 94 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
+                            float mus = _targetHumanPose.muscles[i];
+                            client.Send(_muscleOSCParamDef[i], mus);
+                        }
                     }
                 }
             }
