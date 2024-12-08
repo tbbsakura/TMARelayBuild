@@ -11,6 +11,7 @@ namespace HardCoded.VRigUnity {
 		[SerializeField] private TMP_Text portText;
 
 		private bool isVMCStarted;
+		public bool IsVMCStarted => isVMCStarted; // added by tbbsakura
 
 		// on  = #14AD58
 		// off = #B30009

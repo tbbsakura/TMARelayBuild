@@ -28,7 +28,7 @@ public class TMARelay_FileDragAndDrop : MonoBehaviour
     SakuraVRMMuscle2OSC _muscle2OSC;
 
     private void Awake() {
-        m_exrec = GameObject.Find("/ExternalReceiver").GetComponent<EVMC4U.ExternalReceiver>();
+        m_exrec = GameObject.Find("ExternalReceiver").GetComponent<EVMC4U.ExternalReceiver>();
         _muscle2OSC = GetComponent<SakuraVRMMuscle2OSC>();
     }
 
