@@ -21,8 +21,11 @@ dialog.save_file=ファイルを保存
 text.ip_hidden=Ipアドレス(伏せ字)
 text.model_hidden=モデルは非表示
 tab.model.label=モデル
-tab.model.about_me_title=作者について
+tab.model.about_me_title=VRigUnityの作者について
+tab.model.about_me_title2=TMARelayの作者について
 tab.model.about_me_body=I'm a small developer that likes to do stuff on my spare time\nPlease check me out.
+tab.model.about_me_body2=TMARelayはVRigUnityを活用して制作されました。\n質問等は上の連絡先(TMARelay作者)にお願いします。
+
 tab.model.title=モデル設定
 tab.model.select_model=モデル選択
 tab.model.reset_model=モデルをデフォルトに

@@ -1,3 +1,7 @@
+// VMCSender.cs
+// Original by HardCoded
+// Added some lines by tbbsakura  (ModelTabAboutMeTitle2)
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,6 +95,7 @@ namespace HardCoded.VRigUnity {
 
 				ModelTabLabel = new("tab.model.label", "Model"),
 				ModelTabAboutMeTitle = new("tab.model.about_me_title", "About me"),
+				ModelTabAboutMeTitle2 = new("tab.model.about_me_title2", "About me (TMARelay)"), // added by tbbsakura
 				ModelTabAboutMeBody = new("tab.model.about_me_body", "I'm a small developer that likes to do stuff on my spare time\nPlease check me out."),
 				ModelTabTitle = new("tab.model.title", "Model Settings"),
 				ModelTabSelectModel = new("tab.model.select_model", "Select Model"),

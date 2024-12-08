@@ -1,3 +1,6 @@
+// Original by HardCoded
+// Omitted some lines by tbbsakura  (virtual camera device)
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,13 +65,14 @@ namespace HardCoded.VRigUnity {
 					}
 				}, Settings.CameraFlipped, FieldData.None);
 			});
+/* disabled by Sakura(tbbsakura) for TMARelay
 			CreateSetting(Lang.CameraTabVirtualCamera, builder => {
 				return builder
 					.AddToggle((_, value) => Settings.Temporary.VirtualCamera = value, Settings.Temporary.VirtualCamera, new(24))
 					.AddButton(Lang.CameraTabVirtualCameraInstall, (_) => CameraCapture.InstallVirtualCamera(), FieldData.None)
 					.AddButton(Lang.CameraTabVirtualCameraUninstall, (_) => CameraCapture.UninstallVirtualCamera(), FieldData.None);
 			});
-
+*/
 			AddDivider(Lang.CameraTabDividerEffects);
 			CreateSetting(Lang.CameraTabCustomBackground, builder => {
 				return builder

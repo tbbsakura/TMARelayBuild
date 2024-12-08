@@ -1,3 +1,6 @@
+// Original by HardCoded
+// Omitted some lines by tbbsakura  (VMCP Send port, ShowModel etc)
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,11 +27,13 @@ namespace HardCoded.VRigUnity {
 			});
 
 			AddDivider(Lang.AdvancedTabDividerVmc);
+/* omitted by Sakura
 			CreateSetting(Lang.AdvancedTabVmcSender, builder => {
 				return builder
 					.AddIpAddressField((_, value) => Settings.VMCSenderAddress = value, true, "127.0.0.1", () => Settings.VMCSenderAddress, new(136, ""))
 					.AddNumberInput((_, value) => Settings.VMCSenderPort = value, 0, 65535, 3333, Settings.VMCSenderPort, FieldData.None);	
 			});
+*/
 			CreateSetting(Lang.AdvancedTabVmcReceiverPort, builder => {
 				return builder.AddNumberInput((_, value) => Settings.VMCReceiverPort = value, 0, 65535, 3333, Settings.VMCReceiverPort, FieldData.None);	
 			});
@@ -53,9 +58,11 @@ namespace HardCoded.VRigUnity {
 			CreateSetting(Lang.AdvancedTabShowWebcam, builder => {
 				return builder.AddToggle((_, value) => guiMain.SetShowCamera(value), false, FieldData.None);
 			});
+/* omitted by Sakura
 			CreateSetting(Lang.AdvancedTabShowModel, builder => {
 				return builder.AddToggle((_, value) => Settings.ShowModel = value, Settings.ShowModel, FieldData.None);
 			});
+*/
 			CreateSetting(Lang.AdvancedTabGuiScale, builder => {
 				return builder.AddIntSlider((_, value) => Settings.GuiScale = value, 1, 10, Settings.GuiScale, FieldData.None);
 			});

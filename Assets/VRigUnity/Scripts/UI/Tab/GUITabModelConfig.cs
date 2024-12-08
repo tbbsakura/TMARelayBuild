@@ -1,3 +1,6 @@
+// Original HardCoded.VRigUnity
+// some lines added by Sakura(tbbsakura)
+
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +27,9 @@ namespace HardCoded.VRigUnity {
 		[SerializeField] private Button discordButton;
 		[SerializeField] private Button twitterButton;
 
+		[SerializeField] private Button githubButton2;
+		[SerializeField] private Button twitterButton2;
+
 		void Start() {
 			selectModelButton.onClick.RemoveAllListeners();
 			resetModelButton.onClick.RemoveAllListeners();
@@ -45,6 +51,12 @@ namespace HardCoded.VRigUnity {
 			githubButton.onClick.AddListener(delegate { Application.OpenURL("https://github.com/Kariaro/VRigUnity"); });
 			discordButton.onClick.AddListener(delegate { Application.OpenURL("https://discord.com/invite/Enaup9TJPd"); });
 			twitterButton.onClick.AddListener(delegate { Application.OpenURL("https://twitter.com/HardCodedTwitch"); });
+
+			// added by Sakura(tbbsakura)
+			githubButton2.onClick.RemoveAllListeners();
+			twitterButton2.onClick.RemoveAllListeners();
+			githubButton2.onClick.AddListener(delegate { Application.OpenURL("https://github.com/tbbsakura/TMARelayBuild"); });
+			twitterButton2.onClick.AddListener(delegate { Application.OpenURL("https://x.com/tbbsakura1"); });
 		}
 
 		private void ResetModel() {

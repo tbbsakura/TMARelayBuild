@@ -182,7 +182,7 @@ namespace UnityEngine.UI
 
         [SerializeField, Tooltip("VRMアバターを入れます。変更時はStartのチェックを2つともオフにしてください")]
         Animator _animationTarget;
-
+        [SerializeField] EVMC4U.ExternalReceiver _exrec;
         private String    _ipAddress = "127.0.0.1";
         private const int _portDestination = 9000;
         private const int _portListen = 39544;
@@ -196,10 +196,11 @@ namespace UnityEngine.UI
         private Toggle _toggleServer;
         private Toggle _toggleServerCutEye;
 
-        private Toggle _toggleLeftArm = null;
-        private Toggle _toggleRightArm = null;
+        [SerializeField] Toggle _toggleLeftArm = null;
+        [SerializeField] Toggle _toggleRightArm = null;
         private Toggle _toggleExpertMode = null;
-        private Toggle _toggleFinger48Mode = null;
+        [SerializeField] Toggle _toggleFinger48Mode = null;
+        [SerializeField] Toggle _toggleOldAvatarMode = null;
         private Text _textExpertMode;
         private Button _buttonModeNormal;
         private GameObject _expertUI;
@@ -209,12 +210,13 @@ namespace UnityEngine.UI
         TMARelaySetting _setting = new TMARelaySetting();
 
 #if TMARELAY_KANTANPACK
-        private HardCoded.VRigUnity.CameraButton _vruCameraButton;
+        [SerializeField] HardCoded.VRigUnity.CameraButton _vruCameraButton;
+        [SerializeField] HardCoded.VRigUnity.VMCReceiverButton _vruVMCPReceiveButton;
 #endif
         // Start is called before the first frame update
         void Start()
         {
-            var server =  GameObject.Find("ExternalReceiver").GetComponent<uOscServer>();
+            var server =  _exrec.gameObject.GetComponent<uOscServer>();
             server.port = _portListen;
             _loader = GetComponent<TMARelay_FileDragAndDrop>();
 
@@ -240,11 +242,11 @@ namespace UnityEngine.UI
             _expertUI = GameObject.Find("ExpertUI");
             _expertUI.SetActive(false);
 #endif
-            _toggleLeftArm = GameObject.Find("ToggleLeft").GetComponent<Toggle>();
+            //_toggleLeftArm = GameObject.Find("ToggleLeft").GetComponent<Toggle>();
             _toggleLeftArm.isOn = _startLeftArm;
-            _toggleRightArm = GameObject.Find("ToggleRight").GetComponent<Toggle>();
+            //_toggleRightArm = GameObject.Find("ToggleRight").GetComponent<Toggle>();
             _toggleRightArm.isOn = _startRightArm;
-            _toggleFinger48Mode = GameObject.Find("ToggleFinger48").GetComponent<Toggle>();
+            //_toggleFinger48Mode = GameObject.Find("ToggleFinger48").GetComponent<Toggle>();
             _toggleFinger48Mode.isOn = _startFinger48;
 
             _topText = GameObject.Find("TopText").GetComponent<Text>();
@@ -257,9 +259,15 @@ namespace UnityEngine.UI
             }
 
 #if TMARELAY_KANTANPACK
-            var cbgo = GameObject.Find("Camera Button");
-             _vruCameraButton = cbgo.GetComponent<HardCoded.VRigUnity.CameraButton>();
-            _topText.text = "設定ボタンの中で使用するカメラを指定してから\r\nカメラ開始を押してください";
+            if ( _vruCameraButton == null ) {
+                var cbgo = GameObject.Find("Camera Button");
+                _vruCameraButton = cbgo.GetComponent<HardCoded.VRigUnity.CameraButton>();
+            }
+            if ( _vruVMCPReceiveButton == null ) {
+                var cbgo = GameObject.Find("VMC Receiver Button");
+                _vruVMCPReceiveButton = cbgo.GetComponent<HardCoded.VRigUnity.VMCReceiverButton>();
+            }
+            _topText.text = "設定ボタンの中で使用するカメラを指定してから\r\nカメラ開始かVMCP受信開始を押してください";
 #endif
 #if !TMARELAY_KANTANPACK
             // デフォルトモデルのロード
@@ -429,7 +437,7 @@ namespace UnityEngine.UI
         public void OnServerCutEyeToggleChanged(Boolean value) 
         {
             bool isOn = _toggleServerCutEye.isOn;
-            var exr = GameObject.Find("ExternalReceiver").GetComponent<EVMC4U.ExternalReceiver>();
+            var exr = _exrec;
             if ( exr == null ) return;
 
             exr.CutBoneNeck = false;
@@ -458,7 +466,7 @@ namespace UnityEngine.UI
 
         public void OnServerToggleChanged(Boolean value) 
         {
-            var uoscServer =  GameObject.Find("ExternalReceiver").GetComponent<uOscServer>();
+            var uoscServer =  _exrec.gameObject.GetComponent<uOscServer>();
             if ( _toggleServer.isOn == false ) {
                 uoscServer.StopServer();
                 _topText.text = "OSC server stopped.";
@@ -480,20 +488,21 @@ namespace UnityEngine.UI
             }
         }
 #endif
+        void SetAnimationTarget()
+        {
+            if ( _animationTarget != null ) return;
+            if ( _exrec != null ) {
+                _animationTarget = _exrec.Model.GetComponent<Animator>();
+            }
+        }
         bool InitClient()
         {
+            SetAnimationTarget();
             if ( _animationTarget == null ) 
             {
                 SetClientTogglesOff();
                 Debug.Log("InitClient() failed: _animationTarget == null");
-				var goer = GameObject.Find("/ExternalReceiver");
-				if ( goer == null ) return false;
-                var exrec = goer.GetComponent<ExternalReceiver>();
-				if ( exrec == null ) return false;
-                if ( exrec.Model == null ) return false;
-                var ani = exrec.Model.GetComponent<Animator>();
-                if ( ani == null ) return false;
-                _animationTarget = ani;
+                return false;
             }
 
             if (_handler == null ) {
@@ -648,7 +657,9 @@ namespace UnityEngine.UI
         {
 #if TMARELAY_KANTANPACK
             bool vruEnabled = _vruCameraButton.IsCameraShowing;
-            if ( vruEnabled ) { // Finger Mode専用
+            bool vmcprecEnabled = _vruVMCPReceiveButton.IsVMCStarted;
+            if ( vruEnabled || vmcprecEnabled ) { // Finger ModeかどうかはUI toggle で指定
+                SetAnimationTarget();
                 if (_toggleFinger48Mode.isOn == false ) {
                     _toggleFinger48Mode.isOn = true;
                     _startFinger48 = true;
@@ -708,7 +719,7 @@ namespace UnityEngine.UI
                     }
                 }
 //#if FINGER_MODE_4BIT || FINGER_MODE_2BIT
-                else if (_startFinger48==true)
+                else if (_startFinger48==true && !_toggleOldAvatarMode.isOn)
                 {
                     int int1 = 0;
 #if FINGER_MODE_4BIT  // 4bit
@@ -822,32 +833,17 @@ namespace UnityEngine.UI
 #endif
                 }
 //#endif
-                else // Normal Mode
+                else // Old Mode (v0.5.0以前)
                 {
-                    if ( _startLeftArm == true )
-                    {
-                        // 37, 38 ... LeftShoulder
-                        for (int i = 39; i <= 43 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
-                            float mus = _targetHumanPose.muscles[i];
-                            client.Send(_muscleOSCParamDef[i], mus);
-                        }
-                        // finger test
-                        for (int i = 55; i <= 74 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
-                            float mus = _targetHumanPose.muscles[i];
-                            client.Send(_muscleOSCParamDef[i], mus);
-                        }
+                    // 37, 38 ... LeftShoulder
+                    for (int i = 39; i <= 43 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
+                        float mus = _targetHumanPose.muscles[i];
+                        client.Send(_muscleOSCParamDef[i], mus);
                     }
-                    if ( _startRightArm == true ) {
-                        // 46, 47 ... RightShoulder
-                        for (int i = 48; i <= 52 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
-                            float mus = _targetHumanPose.muscles[i];
-                            client.Send(_muscleOSCParamDef[i], mus);
-                        }
-                        // finger test
-                        for (int i = 75; i <= 94 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
-                            float mus = _targetHumanPose.muscles[i];
-                            client.Send(_muscleOSCParamDef[i], mus);
-                        }
+                    // 46, 47 ... RightShoulder
+                    for (int i = 48; i <= 52 && i < musclesLen && i < _muscleOSCParamDef.Length; i++) { // 使う範囲かつ上限以内
+                        float mus = _targetHumanPose.muscles[i];
+                        client.Send(_muscleOSCParamDef[i], mus);
                     }
                 }
             }
