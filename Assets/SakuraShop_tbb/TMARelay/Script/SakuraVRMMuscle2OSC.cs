@@ -643,7 +643,6 @@ namespace UnityEngine.UI
         // Update is called once per frame
         void Update()
         {
-            
 #if TMARELAY_KANTANPACK
             bool vruEnabled = _vruCameraButton.IsCameraShowing;
             if ( vruEnabled ) { // Finger Mode専用
@@ -668,7 +667,7 @@ namespace UnityEngine.UI
                 } */               
             }
             else {
-               if ( _toggleLeftArm.isOn || _toggleRightArm.isOn || _toggleFinger48Mode.isOn ) {
+                if ( _toggleLeftArm.isOn || _toggleRightArm.isOn || _toggleFinger48Mode.isOn ) {
                     _toggleLeftArm.isOn = false;
                     _toggleRightArm.isOn = false;
                     _startLeftArm = false;
@@ -731,7 +730,7 @@ namespace UnityEngine.UI
                         _targetHumanPose.muscles[49]);// Upper Right FrontBack
                     client.Send(_muscle4bitOSCParam[3], int1 );// "/avatar/parameters/TMARelay_UpperArmLR_FrontBack",
 
-               int1 = Encode2FloatsToInt(
+                    int1 = Encode2FloatsToInt(
                         _targetHumanPose.muscles[41],// Upper Left Twist
                         _targetHumanPose.muscles[50]); // Upper Right Twist
                     client.Send(_muscle4bitOSCParam[4], int1 );// "/avatar/parameters/TMARelay_UpperArmLR_Twist",
@@ -755,7 +754,7 @@ namespace UnityEngine.UI
                         (_targetHumanPose.muscles[67]+_targetHumanPose.muscles[69]+_targetHumanPose.muscles[70])/3.0f, // Left Ring
                         (_targetHumanPose.muscles[87]+_targetHumanPose.muscles[89]+_targetHumanPose.muscles[90])/3.0f); // Right Ring
                     client.Send(_muscle4bitOSCParam[8], int1 );// "/avatar/parameters/TMAR_LR_RING",
-  int1 = Encode2FloatsToInt(
+                    int1 = Encode2FloatsToInt(
                         (_targetHumanPose.muscles[71]+_targetHumanPose.muscles[73]+_targetHumanPose.muscles[74])/3.0f, // Left Pinky
                         (_targetHumanPose.muscles[91]+_targetHumanPose.muscles[93]+_targetHumanPose.muscles[94])/3.0f); // // Right Pinky
                     client.Send(_muscle4bitOSCParam[9], int1 );// "/avatar/parameters/TMAR_LR_LITTLE",
