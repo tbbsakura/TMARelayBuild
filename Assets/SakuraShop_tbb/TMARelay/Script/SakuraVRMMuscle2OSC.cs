@@ -53,6 +53,8 @@ namespace UnityEngine.UI
             "/avatar/parameters/TMAR_LR_MIDDLE",
             "/avatar/parameters/TMAR_LR_RING",
             "/avatar/parameters/TMAR_LR_LITTLE",
+            "/avatar/parameters/HandLR_InOut",
+            "/avatar/parameters/HandLR_DownUp",
         };
 //#endif
 
@@ -723,7 +725,7 @@ namespace UnityEngine.UI
 
                     int1 = Encode2FloatsToInt(
                         (_targetHumanPose.muscles[55]+_targetHumanPose.muscles[57]+_targetHumanPose.muscles[58])/3.0f, // Left Thumb
-                        (_targetHumanPose.muscles[75]+_targetHumanPose.muscles[77]+_targetHumanPose.muscles[78])/3.0f); // // Right thumb
+                        (_targetHumanPose.muscles[75]+_targetHumanPose.muscles[77]+_targetHumanPose.muscles[78])/3.0f); // Right thumb
                     client.Send(_muscle4bitOSCParam[5], int1 );// "/avatar/parameters/TMAR_LR_THUMB",
 
                     int1 = Encode2FloatsToInt(
@@ -733,7 +735,7 @@ namespace UnityEngine.UI
 
                     int1 = Encode2FloatsToInt(
                         (_targetHumanPose.muscles[63]+_targetHumanPose.muscles[65]+_targetHumanPose.muscles[66])/3.0f, // Left Middle
-                        (_targetHumanPose.muscles[83]+_targetHumanPose.muscles[85]+_targetHumanPose.muscles[86])/3.0f); // // Right Middle
+                        (_targetHumanPose.muscles[83]+_targetHumanPose.muscles[85]+_targetHumanPose.muscles[86])/3.0f); // Right Middle
                     client.Send(_muscle4bitOSCParam[7], int1 );// "/avatar/parameters/TMAR_LR_MIDDLE",
 
                     int1 = Encode2FloatsToInt(
@@ -743,8 +745,18 @@ namespace UnityEngine.UI
 
                     int1 = Encode2FloatsToInt(
                         (_targetHumanPose.muscles[71]+_targetHumanPose.muscles[73]+_targetHumanPose.muscles[74])/3.0f, // Left Pinky
-                        (_targetHumanPose.muscles[91]+_targetHumanPose.muscles[93]+_targetHumanPose.muscles[94])/3.0f); // // Right Pinky
+                        (_targetHumanPose.muscles[91]+_targetHumanPose.muscles[93]+_targetHumanPose.muscles[94])/3.0f); // Right Pinky
                     client.Send(_muscle4bitOSCParam[9], int1 );// "/avatar/parameters/TMAR_LR_LITTLE",
+
+                    int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[45],// Left Hand InOut
+                        _targetHumanPose.muscles[54]); // Right Hand InOut
+                    client.Send(_muscle4bitOSCParam[10], int1 );//  "/avatar/parameters/HandLR_InOut",
+                    int1 = Encode2FloatsToInt(
+                        _targetHumanPose.muscles[44],// Left Hand DownUp
+                        _targetHumanPose.muscles[53]); // Right Hand DownUp
+                    client.Send(_muscle4bitOSCParam[11], int1 );//  "/avatar/parameters/HandLR_DownUp",
+
 #else
 //if FINGER_MODE_2BIT
                     Debug.Log("FINGER_MODE_2BIT");
